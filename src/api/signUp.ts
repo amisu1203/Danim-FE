@@ -54,10 +54,10 @@ export const getRefreshToken = () => getCookie("refreshToken");
 
 // 로그아웃 처리 함수
 const removeAllInfo = () => {
-  document.cookie =
-    "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-  document.cookie =
-    "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  // document.cookie =
+  //   "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  // document.cookie =
+  //   "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   localStorage.removeItem("id");
   localStorage.removeItem("nickname");
   localStorage.removeItem("profileUrl");
@@ -250,35 +250,13 @@ export const fetchLogin = async (user: {
 // 로그아웃
 export const fetchLogout = async () => {
   try {
-    const accessToken = getAccessToken();
-    const refreshToken = getRefreshToken();
-    if (accessToken) {
-      const response = await axiosInstance.delete("/api/user/logout", {
-        headers: {
-          ACCESS_KEY: accessToken,
-        },
-      });
-      removeAllInfo();
-      return response;
-    }
-    // 리프레쉬 토큰으로 요청
-
-    const response = await axiosInstance.delete("/api/user/logout", {
-      headers: {
-        REFRESH_KEY: refreshToken,
-      },
-    });
+    const response = await axiosInstance.delete("/api/user/logout");
+    removeAllInfo();
     return response;
   } catch (err: any) {
-    if (err) {
-      // if (err.response.status === 404) {
-      // }
-    }
+    // 액세스 토큰이 없거나 요청이 실패한 경우에도 로그아웃 처리
+    removeAllInfo();
   }
-
-  // 액세스 토큰이 없거나 요청이 실패한 경우에도 로그아웃 처리
-  removeAllInfo();
-
   return null;
 };
 
