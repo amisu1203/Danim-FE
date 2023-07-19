@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import Swal from "sweetalert2";
-import { fetchLogout, getAccessToken, getRefreshToken } from "../../api/signUp";
-import loginUserIdState from "../../recoil/login/userInfo";
+import { fetchLogout } from "../../api/signUp";
 import st from "./commonStyle/HeaderST";
 import {
   filterList,
@@ -24,17 +23,8 @@ function Header() {
   const hasNew = localStorage.getItem("hasNewChat");
   // 채팅 알람에 대한 state
   const [hasNewChat] = useRecoilState(hasNewChatState);
-
   // 로컬에 저장된 사용자 아이디
   const userId = localStorage.getItem("id");
-
-  // 토큰 state
-  // const accessToken = getAccessToken();
-  // const refreshToken = getRefreshToken();
-  // const [userAccessCookie, setUserAccessCookie] = useState(accessToken);
-  // const [userRefreshCookie, setUserRefreshCookie] = useState(refreshToken);
-  const [, setLoginUserId] = useRecoilState(loginUserIdState);
-
   // 메인페이지에서 관리하는 검색 state
   const setSearchedTitle = useSetRecoilState(searchedTitleState);
   const setFilterList = useSetRecoilState(filterList);
@@ -42,11 +32,9 @@ function Header() {
   const setFilteredGroupSize = useSetRecoilState(filteredGroupSize);
   const setFilteredAge = useSetRecoilState(filteredAge);
   const [isSearched, setIsSearched] = useRecoilState(isSearchClicked);
-
   // 유저 프로필 사진
   const profileImg = localStorage.getItem("profileUrl");
   const [userProfile, setUserProfile] = useState("");
-
   // 네비게이트 함수 생성
   const navigate = useNavigate();
 
@@ -59,9 +47,6 @@ function Header() {
         text: "로그아웃이 완료되었습니다.",
         confirmButtonColor: "#A3BF3B",
       });
-      // setUserAccessCookie(null);
-      // setUserRefreshCookie(null);
-      setLoginUserId("");
       return navigate("/");
     },
     onError: () =>
@@ -138,7 +123,6 @@ function Header() {
           src="/header/danimLogo.svg"
           alt="다님 로고"
         />
-        {/* {userAccessCookie || userRefreshCookie ? ( */}
         {userId ? (
           <st.ButtonContainer>
             <st.CommonStyleButton
