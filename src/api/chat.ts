@@ -13,7 +13,6 @@ export const chatStart = async (postId: number) => {
     const response = await axiosInstance.post(`api/chat/room/${postId}`, null);
     return response.data;
   } catch (error: any) {
-    console.log("ㅇㅇ", axiosInstance.defaults.headers);
     if (error.response.status === 401) {
       const { detail } = error.response.data;
       if (detail === "신청하신 나이대에 포함되지않습니다.") {
@@ -111,14 +110,16 @@ export const chatStart = async (postId: number) => {
 // 내가 작성한 게시물 채팅방 리스트 조회
 export const getMyPostChatRoomList = async () => {
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_APP_URL}/api/chat/myChatRoom`,
-      {
-        headers: {
-          ACCESS_KEY: getCookie("accessToken"),
-        },
-        withCredentials: true,
-      }
+    // const response = await axios.get(
+    const response = await axiosInstance.get(
+      "/api/chat/myChatRoom"
+      // `${import.meta.env.VITE_APP_URL}/api/chat/myChatRoom`,
+      // {
+      //   headers: {
+      //     ACCESS_KEY: getCookie("accessToken"),
+      //   },
+      //   withCredentials: true,
+      // }
     );
     return response.data;
     // if (response.status === 200) {
@@ -134,14 +135,16 @@ export const getMyPostChatRoomList = async () => {
 // 내가 참여한 게시물 채팅방 리스트 조회
 export const getMyjoinChatRoomList = async () => {
   try {
-    const response = await axios.get(
-      `${import.meta.env.VITE_APP_URL}/api/chat/joinChatRoom`,
-      {
-        headers: {
-          ACCESS_KEY: getCookie("accessToken"),
-        },
-        withCredentials: true,
-      }
+    // const response = await axios.get(
+    const response = await axiosInstance.get(
+      "/api/chat/joinChatRoom"
+      // `${import.meta.env.VITE_APP_URL}/api/chat/joinChatRoom`,
+      // {
+      //   headers: {
+      //     ACCESS_KEY: getCookie("accessToken"),
+      //   },
+      //   withCredentials: true,
+      // }
     );
     return response.data;
     // if (response.status === 200) {
